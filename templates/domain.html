@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ domain }} - Wikipedia Domain</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body{% if domain|lower == 'computer' %} class="computer-background"{% endif %}>
+    <div class="container">
+        {% if parent_domain %}
+        <a href="{{ url_for('subdomains_page', domain=parent_domain) }}" style="text-decoration:none;color:#007bff;">&larr; Back to {{ parent_domain|capitalize }} Subdomains</a>
+        {% else %}
+        <a href="/" style="text-decoration:none;color:#007bff;">&larr; Back to Home</a>
+        {% endif %}
+        {% if img_url %}
+        <div style="display:flex;justify-content:center;margin:18px 0 8px 0;">
+            <img src="{{ img_url }}" alt="{{ domain }}" style="width:90px;height:90px;object-fit:contain;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f5f5f5;">
+        </div>
+        {% endif %}
+        <h1 style="text-align:center;">{{ domain }}</h1>
+        <form method="POST" class="domain-search-form" style="margin: 24px 0; display: flex; gap: 10px; justify-content: center;">
+            <input type="text" name="search" placeholder="Search inside {{ domain }}..." style="flex:1;max-width:300px;padding:8px 12px;border-radius:6px;border:1px solid #ccc;font-size:16px;">
+            <button type="submit" style="padding:8px 18px;background:#007bff;color:#fff;border:none;border-radius:6px;font-size:16px;cursor:pointer;">Search</button>
+        </form>
+        {% if summary %}
+        <div class="result">
+            <h2>Summary:</h2>
+            <p>{{ summary }}</p>
+            {% if url %}
+            <a href="{{ url }}" target="_blank">Read full article</a>
+            {% endif %}
+        </div>
+        {% elif error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

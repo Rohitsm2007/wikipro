@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ domain|capitalize }} Subdomains</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Animated background shapes -->
+    <div class="bg-shape bg-shape1"></div>
+    <div class="bg-shape bg-shape2"></div>
+    <div class="bg-shape bg-shape3"></div>
+    <div class="bg-shape bg-shape4"></div>
+    <!-- Dark mode toggle -->
+    <button class="toggle-darkmode" id="toggleDarkMode" title="Toggle dark mode">🌙</button>
+    <div class="container">
+        <a href="/" style="text-decoration:none;color:#007bff;">&larr; Back to Home</a>
+        {% if img_url %}
+        <div style="display:flex;justify-content:center;margin:18px 0 8px 0;">
+            <img src="{{ img_url }}" alt="{{ domain }}" style="width:90px;height:90px;object-fit:contain;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f5f5f5;">
+        </div>
+        {% endif %}
+        <h1 style="text-align:center;text-transform:capitalize">{{ domain }} Subdomains</h1>
+        <div class="row domain-cards">
+            {% for sub in subdomains %}
+            <a href="{{ url_for('subdomain_page', domain=domain, subdomain=sub) }}" class="card domain-card">
+                <img src="{{ subdomain_images.get(sub, 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png') }}" class="avatar" alt="{{ sub }}">
+                <span style="font-size:1.1em;text-transform:capitalize;font-weight:600;">{{ sub }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+    // Dark mode toggle
+    const toggleBtn = document.getElementById('toggleDarkMode');
+    function setDarkMode(on) {
+        document.body.classList.toggle('dark-mode', on);
+        localStorage.setItem('darkMode', on ? '1' : '0');
+        toggleBtn.innerHTML = on ? '☀️' : '🌙';
+    }
+    toggleBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
+    // On load, restore dark mode
+    if(localStorage.getItem('darkMode') === '1') setDarkMode(true);
+    </script>
+</body>
+</html>
